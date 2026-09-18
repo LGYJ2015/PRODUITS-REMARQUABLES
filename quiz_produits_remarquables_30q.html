@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Produits Remarquables - 4e Générale</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            padding: 40px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* ÉCRAN D'ACCUEIL */
+        #homeScreen {
+            text-align: center;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(245, 87, 108, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .btn-secondary-light {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-secondary-light:hover {
+            background: #dee2e6;
+        }
+
+        /* FORMULAIRE */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* MODE PROFESSEUR */
+        #professorScreen {
+            display: none;
+        }
+
+        .code-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .code-display h3 {
+            font-size: 0.9em;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .code-display .code {
+            font-size: 3em;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+        }
+
+        .professor-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .professor-controls button {
+            padding: 12px 20px;
+            font-size: 0.95em;
+        }
+
+        .leaderboard {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .leaderboard h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .leaderboard-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .leaderboard-table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .rank-badge {
+            font-size: 0.8em;
+            font-weight: bold;
+            padding: 4px 8px;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rank-1 { background: #FFD700; color: #333; }
+        .rank-2 { background: #C0C0C0; color: #333; }
+        .rank-3 { background: #CD7F32; color: white; }
+        .rank-other { background: #e9ecef; color: #666; }
+
+        /* ÉCRAN LOGIN PROFESSEUR */
+        #profLoginScreen {
+            display: none;
+            text-align: center;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            color: white;
+        }
+
+        .login-form h2 {
+            margin-bottom: 25px;
+            font-size: 1.8em;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form .form-group label {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .login-form .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            background: white;
+            color: #333;
+        }
+
+        .login-form .form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        }
+
+        .login-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* ÉCRAN ÉLÈVE */
+        #studentScreen {
+            display: none;
+        }
+
+        .quiz-container {
+            display: none;
+        }
+
+        .quiz-container.active {
+            display: block;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .quiz-progress {
+            font-size: 0.9em;
+            color: #666;
+            font-weight: 600;
+        }
+
+        .quiz-score {
+            font-size: 1.1em;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .timer {
+            font-size: 2em;
+            font-weight: bold;
+            padding: 10px 20px;
+            border-radius: 10px;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .timer.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .timer.warning {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .question {
+            margin-bottom: 30px;
+        }
+
+        .question h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .question p {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            font-family: 'Courier New', monospace;
+        }
+
+        .consigne {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            word-break: break-word;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        /* RÉSULTATS */
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .results-screen.active {
+            display: block;
+        }
+
+        .final-score {
+            font-size: 3em;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .score-message {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+
+            .professor-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+
+            .quiz-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>🎯 Produits Remarquables</h1>
+            <p>4e Générale | Réalisé par Mme Ghayati</p>
+        </div>
+
+        <!-- ÉCRAN D'ACCUEIL -->
+        <div id="homeScreen">
+            <h2 style="margin-bottom: 30px; color: #333;">Sélectionnez votre rôle</h2>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="showProfessorLogin()">
+                    👨‍🏫 Mode Professeur
+                </button>
+                <button class="btn btn-secondary" onclick="goToStudent()">
+                    👨‍🎓 Mode Élève
+                </button>
+            </div>
+        </div>
+
+        <!-- ÉCRAN LOGIN PROFESSEUR -->
+        <div id="profLoginScreen">
+            <div class="login-form">
+                <h2>🔐 Connexion Professeur</h2>
+                <div class="login-error" id="loginError"></div>
+                <div class="form-group">
+                    <label for="professorPassword">Mot de passe :</label>
+                    <input type="password" id="professorPassword" placeholder="Entrez votre mot de passe" maxlength="8" />
+                </div>
+                <div class="button-group" style="flex-direction: column; gap: 10px;">
+                    <button class="btn btn-success" onclick="validateProfessorPassword()">
+                        ✓ Se connecter
+                    </button>
+                    <button class="btn btn-secondary-light" onclick="backHome()">
+                        🏠 Retour Accueil
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODE PROFESSEUR -->
+        <div id="professorScreen">
+            <div id="codeSetupForm">
+                <h2 style="margin-bottom: 30px; color: #333;">Configurez votre code d'accès</h2>
+                <div class="form-group">
+                    <label for="professorCode">Entrez un code d'accès (4 caractères) :</label>
+                    <input type="text" id="professorCode" placeholder="Ex: PROD, PR01, etc." maxlength="4" style="text-transform: uppercase;" />
+                </div>
+                <div id="codeError" class="error-message hidden"></div>
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="setProfessorCode()">
+                        ✓ Confirmer le code
+                    </button>
+                    <button class="btn btn-secondary-light" onclick="backHome()">
+                        🏠 Retour Accueil
+                    </button>
+                </div>
+            </div>
+
+            <div id="professorDashboard" style="display: none;">
+                <div class="code-display">
+                    <h3>CODE D'ACCÈS POUR LES ÉLÈVES</h3>
+                    <div class="code" id="accessCode">XXXX</div>
+                    <button class="btn btn-success" style="margin-top: 15px;" onclick="showCodeSetupForm()">
+                        ✏️ Modifier le code
+                    </button>
+                </div>
+
+                <div class="professor-controls">
+                    <button class="btn btn-primary" onclick="startQuiz()">
+                        ▶️ Démarrer le Quiz
+                    </button>
+                    <button class="btn btn-secondary-light" onclick="resetQuiz()">
+                        🔄 Réinitialiser
+                    </button>
+                    <button class="btn btn-success" onclick="exportCSV()">
+                        📥 Télécharger CSV
+                    </button>
+                    <button class="btn btn-secondary-light" onclick="backHome()">
+                        🏠 Retour Accueil
+                    </button>
+                </div>
+
+                <div class="leaderboard">
+                    <h3>🏆 Classement en direct</h3>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rang</th>
+                                <th>Élève</th>
+                                <th>Score</th>
+                                <th>État</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboardBody">
+                            <tr>
+                                <td colspan="4" style="text-align: center; color: #999;">En attente d'élèves...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODE ÉLÈVE -->
+        <div id="studentScreen">
+            <div id="accessForm">
+                <h2 style="margin-bottom: 30px; color: #333;">Accès au Quiz</h2>
+                <div class="form-group">
+                    <label for="studentName">Votre nom/pseudo :</label>
+                    <input type="text" id="studentName" placeholder="Ex: Marie Dupont" />
+                </div>
+                <div class="form-group">
+                    <label for="accessCodeInput">Code d'accès (4 caractères) :</label>
+                    <input type="text" id="accessCodeInput" placeholder="XXXX" maxlength="4" style="text-transform: uppercase;" />
+                </div>
+                <div id="accessError" class="error-message hidden"></div>
+                <div class="button-group">
+                    <button class="btn btn-success" onclick="validateAccess()">
+                        ✓ Accéder au Quiz
+                    </button>
+                    <button class="btn btn-secondary-light" onclick="backHome()">
+                        🏠 Retour Accueil
+                    </button>
+                </div>
+            </div>
+
+            <div id="quizContainer" class="quiz-container">
+                <div class="quiz-header">
+                    <div class="quiz-progress">
+                        Question <span id="currentQuestion">1</span>/<span id="totalQuestions">30</span>
+                    </div>
+                    <div class="timer" id="timer">20</div>
+                    <div class="quiz-score">Score: <span id="currentScore">0</span>/30</div>
+                </div>
+
+                <div class="question">
+                    <h3>Développe</h3>
+                    <p id="questionText"></p>
+                    <div class="consigne">Choisissez le développement correct</div>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+
+                <div id="feedback" class="hidden" style="margin-top: 20px; padding: 15px; border-radius: 10px; text-align: center; font-weight: 600;"></div>
+            </div>
+
+            <div id="resultsContainer" class="results-screen">
+                <h2 style="color: #333; margin-bottom: 20px;">Quiz Terminé ! 🎉</h2>
+                <div class="final-score" id="finalScore">0/30</div>
+                <div class="score-message" id="scoreMessage"></div>
+                <div class="success-message" id="successDetails"></div>
+                <button class="btn btn-primary" onclick="resetStudent()">
+                    🔄 Recommencer
+                </button>
+                <button class="btn btn-secondary-light" onclick="backHome()">
+                    🏠 Retour Accueil
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== DONNÉES ====================
+        const questions = [
+            { question: "(x + 1)²", options: ["x² + 1", "x² + 2x + 1", "2x + 1", "x² - 2x + 1"], correct: 1 },
+            { question: "(x - 2)(x + 2)", options: ["x² + 4", "x - 4", "x² - 4", "x² - 4x"], correct: 2 },
+            { question: "(x + 3)²", options: ["x² + 3x + 9", "x² + 9", "x² + 6x + 9", "x² + 6x + 3"], correct: 2 },
+            { question: "(2x + 1)²", options: ["2x² + 4x + 1", "4x² + 2x + 1", "4x² + 1", "4x² + 4x + 1"], correct: 3 },
+            { question: "(x - 3)(x + 3)", options: ["x - 9", "x² - 6x", "x² + 9", "x² - 9"], correct: 3 },
+            { question: "(x - 1)²", options: ["x² - 2x + 1", "x² + 2x + 1", "x² - 1", "x² - 2x - 1"], correct: 0 },
+            { question: "(3x + 2)²", options: ["9x² + 6x + 4", "9x² + 12x + 4", "9x² + 4", "3x² + 12x + 4"], correct: 1 },
+            { question: "(x - 4)(x + 4)", options: ["x² + 16", "x - 16", "x² - 16", "x² - 8x"], correct: 2 },
+            { question: "(2x - 3)²", options: ["4x² + 12x + 9", "4x² - 6x + 9", "4x² - 9", "4x² - 12x + 9"], correct: 3 },
+            { question: "(x + 5)²", options: ["x² + 25", "x² + 10x + 5", "x² + 5x + 25", "x² + 10x + 25"], correct: 3 },
+            { question: "(2x + 3)(2x - 3)", options: ["4x² + 9", "4x² - 9", "4x² - 6x", "2x - 9"], correct: 1 },
+            { question: "(3x - 1)²", options: ["9x² - 1", "9x² - 3x + 1", "9x² - 6x + 1", "9x² + 6x + 1"], correct: 2 },
+            { question: "(x + y)²", options: ["x² + y²", "x² + xy + y²", "x² + 2xy + y²", "x² + 2xy + 2y²"], correct: 2 },
+            { question: "(x - y)(x + y)", options: ["x² + y²", "x² - y²", "x² - xy", "x - y"], correct: 1 },
+            { question: "(2x + y)²", options: ["2x² + 4xy + y²", "4x² + 2xy + y²", "4x² + 4xy + y²", "4x² + y²"], correct: 2 },
+            { question: "(3x - y)²", options: ["9x² - 3xy + y²", "9x² - 6xy + y²", "9x² - y²", "9x² + 6xy + y²"], correct: 1 },
+            { question: "(x + 2y)(x - 2y)", options: ["x² + 4y²", "x - 4y", "x² - 4y²", "x² - 2xy"], correct: 2 },
+            { question: "(4x + 1)²", options: ["16x² + 8x + 1", "16x² + 1", "4x² + 8x + 1", "16x² + 4x + 1"], correct: 0 },
+            { question: "(2x - y)²", options: ["4x² + 4xy + y²", "4x² - 4xy + y²", "4x² - y²", "4x² - 2xy + y²"], correct: 1 },
+            { question: "(5x - 2)(5x + 2)", options: ["25x² + 4", "25x² - 4", "25x² - 20x", "5x - 4"], correct: 1 },
+            { question: "(-x + 3)²", options: ["x² + 6x + 9", "x² - 6x + 9", "x² - 9", "x² - 3x + 9"], correct: 1 },
+            { question: "(x + 4)(x - 4)", options: ["x² - 16", "x² + 16", "x - 16", "x² - 8x"], correct: 0 },
+            { question: "(3x + 2y)²", options: ["3x² + 12xy + 2y²", "9x² + 12xy + 4y²", "9x² + 4y²", "9x² + 6xy + 4y²"], correct: 1 },
+            { question: "(2x - 5)²", options: ["4x² + 20x + 25", "4x² - 10x + 25", "4x² - 20x + 25", "4x² - 25"], correct: 2 },
+            { question: "(4x + 3y)(4x - 3y)", options: ["16x² + 9y²", "16x² - 9y²", "16x² - 12xy", "4x - 9y"], correct: 1 },
+            { question: "(-2x + 1)²", options: ["4x² - 4x + 1", "4x² + 4x + 1", "4x² - 1", "4x² - 2x + 1"], correct: 0 },
+            { question: "(x² - 5y)²", options: ["x⁴ + 25y²", "x⁴ - 10x²y + 25y²", "x⁴ - 10x²y + 5y²", "x² - 10x²y + 25y²"], correct: 1 },
+            { question: "(3x + 4)(3x - 4)", options: ["9x² + 16", "9x² - 12x", "9x² - 16", "3x - 16"], correct: 2 },
+            { question: "(5x + 3y²)²", options: ["25x² + 9y⁴", "25x² + 30xy + 9y²", "25x² + 30xy² + 9y⁴", "25x² + 15xy² + 9y⁴"], correct: 2 },
+            { question: "(x² + 6y)(x² - 6y)", options: ["x⁴ - 36y²", "x⁴ + 36y²", "x⁴ - 12x²y", "x² - 36y"], correct: 0 }
+        ];
+
+        // ==================== ÉTAT DE L'APP ====================
+        let appState = {
+            mode: null,
+            accessCode: null,
+            currentStudent: null,
+            currentQuestion: 0,
+            score: 0,
+            answers: [],
+            students: [],
+            quizStarted: false,
+            timerInterval: null,
+            shuffledQuestions: []
+        };
+
+        // ==================== INITIALISATION ====================
+        function init() {
+            loadState();
+        }
+
+        function saveState() {
+            localStorage.setItem('quizState', JSON.stringify(appState));
+        }
+
+        function loadState() {
+            const saved = localStorage.getItem('quizState');
+            if (saved) {
+                appState = JSON.parse(saved);
+            }
+        }
+
+        function displayAccessCode() {
+            document.getElementById('accessCode').textContent = appState.accessCode || 'XXXX';
+        }
+
+        // ==================== NAVIGATION ====================
+        function goToProfessor() {
+            appState.mode = 'professor';
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('professorScreen').style.display = 'block';
+            document.getElementById('studentScreen').style.display = 'none';
+            
+            if (appState.accessCode) {
+                showProfessorDashboard();
+            } else {
+                showCodeSetupForm();
+            }
+        }
+
+        function showCodeSetupForm() {
+            document.getElementById('codeSetupForm').style.display = 'block';
+            document.getElementById('professorDashboard').style.display = 'none';
+            document.getElementById('professorCode').value = '';
+            document.getElementById('codeError').classList.add('hidden');
+            document.getElementById('professorCode').focus();
+        }
+
+        function showProfessorDashboard() {
+            document.getElementById('codeSetupForm').style.display = 'none';
+            document.getElementById('professorDashboard').style.display = 'block';
+            displayAccessCode();
+            updateLeaderboard();
+        }
+
+        function setProfessorCode() {
+            const code = document.getElementById('professorCode').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('codeError');
+
+            if (!code) {
+                errorDiv.textContent = '⚠️ Veuillez entrer un code.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (code.length !== 4) {
+                errorDiv.textContent = '⚠️ Le code doit contenir exactement 4 caractères.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            appState.accessCode = code;
+            saveState();
+            errorDiv.classList.add('hidden');
+            showProfessorDashboard();
+        }
+
+        function goToStudent() {
+            appState.mode = 'student';
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('professorScreen').style.display = 'none';
+            document.getElementById('studentScreen').style.display = 'block';
+            document.getElementById('accessForm').style.display = 'block';
+            document.getElementById('quizContainer').classList.remove('active');
+            document.getElementById('resultsContainer').classList.remove('active');
+            document.getElementById('accessCodeInput').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('accessError').classList.add('hidden');
+        }
+
+        function backHome() {
+            stopTimer();
+            appState.mode = null;
+            appState.currentStudent = null;
+            appState.currentQuestion = 0;
+            appState.score = 0;
+            appState.answers = [];
+            appState.quizStarted = false;
+            appState.shuffledQuestions = [];
+            document.getElementById('homeScreen').style.display = 'block';
+            document.getElementById('professorScreen').style.display = 'none';
+            document.getElementById('studentScreen').style.display = 'none';
+            document.getElementById('profLoginScreen').style.display = 'none';
+            document.getElementById('professorPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        // ==================== AUTHENTIFICATION PROFESSEUR ====================
+        // ⚠️ MOT DE PASSE PAR DÉFAUT : "Prof2024"
+        // 🔧 POUR CHANGER LE MOT DE PASSE, MODIFIEZ LA LIGNE SUIVANTE
+        const PROFESSOR_PASSWORD = "Prof2024";
+
+        function showProfessorLogin() {
+            document.getElementById('homeScreen').style.display = 'none';
+            document.getElementById('profLoginScreen').style.display = 'block';
+            document.getElementById('professorScreen').style.display = 'none';
+            document.getElementById('studentScreen').style.display = 'none';
+            document.getElementById('professorPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+            document.getElementById('professorPassword').focus();
+        }
+
+        function validateProfessorPassword() {
+            const password = document.getElementById('professorPassword').value;
+            const errorDiv = document.getElementById('loginError');
+
+            if (!password) {
+                errorDiv.textContent = '⚠️ Veuillez entrer votre mot de passe.';
+                errorDiv.classList.add('show');
+                return;
+            }
+
+            if (password !== PROFESSOR_PASSWORD) {
+                errorDiv.textContent = '❌ Mot de passe incorrect. Accès refusé.';
+                errorDiv.classList.add('show');
+                document.getElementById('professorPassword').value = '';
+                return;
+            }
+
+            // Authentification réussie
+            errorDiv.classList.remove('show');
+            document.getElementById('profLoginScreen').style.display = 'none';
+            goToProfessor();
+        }
+
+        // ==================== MODE PROFESSEUR ====================
+        function startQuiz() {
+            appState.quizStarted = true;
+            saveState();
+            alert('Quiz démarré ! Les élèves peuvent maintenant accéder avec le code.');
+        }
+
+        function resetQuiz() {
+            if (confirm('Êtes-vous sûr ? Cela supprimera tous les résultats des élèves.')) {
+                appState.students = [];
+                appState.quizStarted = false;
+                saveState();
+                updateLeaderboard();
+                alert('Quiz réinitialisé !');
+            }
+        }
+
+        function updateLeaderboard() {
+            const tbody = document.getElementById('leaderboardBody');
+            const sorted = [...appState.students].sort((a, b) => b.score - a.score);
+
+            if (sorted.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: #999;">En attente d\'élèves...</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = sorted.map((student, index) => {
+                let rankClass = 'rank-other';
+                if (index === 0) rankClass = 'rank-1';
+                else if (index === 1) rankClass = 'rank-2';
+                else if (index === 2) rankClass = 'rank-3';
+
+                return `
+                    <tr>
+                        <td><span class="rank-badge ${rankClass}">${index + 1}</span></td>
+                        <td><strong>${student.name}</strong></td>
+                        <td><strong>${student.score}/30</strong></td>
+                        <td>${student.completed ? '✅ Terminé' : '⏳ En cours'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportCSV() {
+            if (appState.students.length === 0) {
+                alert('Aucune donnée à exporter.');
+                return;
+            }
+
+            const sorted = [...appState.students].sort((a, b) => b.score - a.score);
+            let csv = 'Rang,Nom,Score,État,Date\n';
+
+            sorted.forEach((student, index) => {
+                csv += `${index + 1},"${student.name}",${student.score},"${student.completed ? 'Terminé' : 'En cours'}","${student.timestamp}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+
+            link.setAttribute('href', url);
+            link.setAttribute('download', `quiz_produits_remarquables_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            alert('Fichier CSV téléchargé !');
+        }
+
+        // ==================== MODE ÉLÈVE ====================
+        function validateAccess() {
+            const name = document.getElementById('studentName').value.trim();
+            const code = document.getElementById('accessCodeInput').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('accessError');
+
+            if (!name) {
+                errorDiv.textContent = '⚠️ Veuillez entrer votre nom/pseudo.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (!code) {
+                errorDiv.textContent = '⚠️ Veuillez entrer le code d\'accès.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (!appState.accessCode) {
+                errorDiv.textContent = '❌ Le professeur n\'a pas configuré de code. Contactez votre professeur.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (code !== appState.accessCode) {
+                errorDiv.textContent = '❌ Code d\'accès incorrect.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (!appState.quizStarted) {
+                errorDiv.textContent = '❌ Le quiz n\'a pas encore démarré. Contactez votre professeur.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            appState.currentStudent = {
+                name: name,
+                score: 0,
+                answers: [],
+                timestamp: new Date().toLocaleString('fr-BE')
+            };
+
+            startStudentQuiz();
+        }
+
+        function shuffleArray(array) {
+            const arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function startStudentQuiz() {
+            document.getElementById('accessForm').style.display = 'none';
+            document.getElementById('quizContainer').classList.add('active');
+            document.getElementById('resultsContainer').classList.remove('active');
+            appState.currentQuestion = 0;
+            appState.score = 0;
+            appState.answers = [];
+            appState.shuffledQuestions = shuffleArray(questions);
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            if (appState.currentQuestion >= appState.shuffledQuestions.length) {
+                finishQuiz();
+                return;
+            }
+
+            const q = appState.shuffledQuestions[appState.currentQuestion];
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('currentQuestion').textContent = appState.currentQuestion + 1;
+            document.getElementById('totalQuestions').textContent = appState.shuffledQuestions.length;
+            document.getElementById('currentScore').textContent = appState.score;
+
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option';
+                btn.textContent = ['A)', 'B)', 'C)', 'D)'][index] + ' ' + option;
+                btn.onclick = () => selectAnswer(index);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('feedback').classList.add('hidden');
+            startTimer();
+        }
+
+        function selectAnswer(index) {
+            stopTimer();
+            const q = appState.shuffledQuestions[appState.currentQuestion];
+            const isCorrect = index === q.correct;
+
+            appState.answers.push({
+                question: appState.currentQuestion,
+                selected: index,
+                correct: q.correct,
+                isCorrect: isCorrect
+            });
+
+            if (isCorrect) {
+                appState.score++;
+            }
+
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt, i) => {
+                opt.style.pointerEvents = 'none';
+                if (i === q.correct) {
+                    opt.classList.add('correct');
+                } else if (i === index && !isCorrect) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            const feedbackDiv = document.getElementById('feedback');
+            feedbackDiv.style.background = isCorrect ? '#d4edda' : '#f8d7da';
+            feedbackDiv.style.color = isCorrect ? '#155724' : '#721c24';
+            feedbackDiv.textContent = isCorrect ? '✅ Correct !' : '❌ Incorrect';
+            feedbackDiv.classList.remove('hidden');
+
+            setTimeout(() => {
+                appState.currentQuestion++;
+                displayQuestion();
+            }, 2000);
+        }
+
+        function startTimer() {
+            let timeLeft = 20;
+            const timerEl = document.getElementById('timer');
+
+            appState.timerInterval = setInterval(() => {
+                timeLeft--;
+                timerEl.textContent = timeLeft;
+
+                if (timeLeft <= 5) {
+                    timerEl.classList.add('warning');
+                }
+
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    appState.currentQuestion++;
+                    displayQuestion();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (appState.timerInterval) {
+                clearInterval(appState.timerInterval);
+                appState.timerInterval = null;
+            }
+            document.getElementById('timer').classList.remove('warning');
+        }
+
+        function finishQuiz() {
+            stopTimer();
+            appState.currentStudent.score = appState.score;
+            appState.currentStudent.completed = true;
+            appState.students.push(appState.currentStudent);
+            saveState();
+
+            document.getElementById('quizContainer').classList.remove('active');
+            document.getElementById('resultsContainer').classList.add('active');
+
+            const score = appState.score;
+            const percentage = Math.round((score / 30) * 100);
+
+            document.getElementById('finalScore').textContent = `${score}/30 (${percentage}%)`;
+
+            let message = '';
+            if (score >= 28) {
+                message = '🌟 Parfait ! Excellent travail !';
+            } else if (score >= 24) {
+                message = '⭐ Très bien ! Continue comme ça !';
+            } else if (score >= 18) {
+                message = '👍 Bien ! Il y a des progrès.';
+            } else if (score >= 12) {
+                message = '📚 À revoir... Plus de pratique !';
+            } else {
+                message = '💪 Persévère ! Tu vas y arriver.';
+            }
+
+            document.getElementById('scoreMessage').textContent = message;
+
+            let details = '<strong>Résumé :</strong><br>';
+            let correct = appState.answers.filter(a => a.isCorrect).length;
+            details += `✅ ${correct} bonnes réponses<br>`;
+            details += `❌ ${30 - correct} erreurs`;
+            document.getElementById('successDetails').innerHTML = details;
+
+            updateLeaderboard();
+        }
+
+        function resetStudent() {
+            appState.currentStudent = null;
+            appState.currentQuestion = 0;
+            appState.score = 0;
+            appState.answers = [];
+            appState.shuffledQuestions = [];
+
+            document.getElementById('accessForm').style.display = 'block';
+            document.getElementById('quizContainer').classList.remove('active');
+            document.getElementById('resultsContainer').classList.remove('active');
+            document.getElementById('accessCodeInput').value = '';
+            document.getElementById('studentName').value = '';
+            document.getElementById('accessError').classList.add('hidden');
+        }
+
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
